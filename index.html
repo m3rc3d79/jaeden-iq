@@ -23,7 +23,7 @@
 <script type="text/babel">
 const { useState, useEffect, useCallback, useRef, useMemo } = React;
 
-const API_URL = "https://script.google.com/macros/s/AKfycbxEJLRKyulh8XSjamQNi6mbnlJMIw2x6G8DB43y3Bqm3X49qMTPJvYqfs_gPIwPWAkhXQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwWGRoVxw45hClQwe6H23CHYq5IPal4PYGaP-J-SHUJ4Su1K2NXdCg5yiCdtkoNHTCUKQ/exec";
 const ASEAN_DATE = new Date("2026-04-11T08:00:00");
 const SASMO_DATE = new Date("2026-04-18T08:00:00");
 
@@ -562,22 +562,14 @@ function MonitorTab({showToast}){
   const getFeedback=async()=>{
     if(!data)return;
     setLoadingFeedback(true);
-    const summary=`Student: Jaeden, Grade 8, Cambridge curriculum. Exams: ASEAN Apr 11, SASMO Apr 18.
-Answered: ${data.totalAnswers}. XP: Math=${data.progress.xp_math||0}, English=${data.progress.xp_english||0}, GAT=${data.progress.xp_gat||0}, SASMO=${data.progress.xp_sasmo||0}.
-Streak: ${data.progress.streak||0} days. Weak: ${data.weakTopics?.map(w=>`${w.topic}(${w.wrong}x wrong)`).join(", ")||"none"}.
-7-day: ${data.activity?.map(a=>`${a.date}:${a.total}Q/${a.correct}correct`).join(" | ")}.`;
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          model:"claude-haiku-4-5-20251001",
-          max_tokens:400,
-          messages:[{role:"user",content:`Tutor reporting to parents about Grade 8 student Jaeden. ASEAN Scholarship Apr 11, SASMO Apr 18. Be honest and direct. Data:\n${summary}\n\nGive exactly 4 short sections:\n1. EFFORT\n2. STRENGTHS\n3. WEAK AREAS\n4. THIS WEEK: 3 actions\n\nMax 150 words. No fluff.`}],
-        }),
-      });
+      const res=await fetch(API_URL+"?action=feedback");
       const d=await res.json();
-      setFeedback(d.content?.[0]?.text||"No feedback.");
+      if(d.status==="ok"&&d.feedback){
+        setFeedback(d.feedback);
+      } else {
+        showToast("Couldn't load feedback","#EF4444");
+      }
     }catch{showToast("Couldn't load feedback","#EF4444");}
     setLoadingFeedback(false);
   };
