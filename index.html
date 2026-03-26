@@ -23,7 +23,7 @@
 <script type="text/babel">
 const { useState, useEffect, useCallback, useRef, useMemo } = React;
 
-const API_URL = "https://script.google.com/macros/s/AKfycbz_HIzpirZPjsMWG6Rwz7G-fGzvOKo3_dY1ziVov8xb1iU_CiHIitMNcKooNC_JfNX8_Q/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwocZA5z4o-nTFkRMN7kkYuqYKn7teGCa4VuSELbsd1DJef0A4W1P_jsoYw3070_l4fVQ/exec";
 const ASEAN_DATE = new Date("2026-04-11T08:00:00");
 const SASMO_DATE = new Date("2026-04-18T08:00:00");
 
@@ -448,74 +448,109 @@ function HomeTab({gs,totalXP,level,xpInLevel,badges}){
   );
 }
 
+async function generateQuestion(subject, difficulty) {
+  const url = API_URL + "?action=generate&subject=" + subject + "&difficulty=" + difficulty;
+  const res = await fetch(url);
+  const data = await res.json();
+  if (data.status !== "ok") throw new Error("Generate failed");
+  const q = data.question;
+  q.id = "ai_" + Date.now();
+  return q;
+}
+
 function PracticeTab({gs,awardXP,showToast}){
   const [subject,setSubject]=useState(null);
-  const [queue,setQueue]=useState([]);
+  const [difficulty,setDifficulty]=useState("Medium");
   const [current,setCurrent]=useState(null);
+  const [next,setNext]=useState(null); // pre-loaded next question
   const [selected,setSelected]=useState(null);
   const [revealed,setRevealed]=useState(false);
+  const [loading,setLoading]=useState(false);
   const [sessionCount,setSessionCount]=useState(0);
+  const [error,setError]=useState(null);
 
   const subj=SUBJECTS.find(s=>s.id===subject);
 
+  // Silently pre-load next question in background
+  const preloadNext=useCallback(async(sid,diff)=>{
+    try{
+      const q=await generateQuestion(sid,diff);
+      setNext(q);
+    }catch(e){
+      setNext(null);
+    }
+  },[]);
+
+  const loadNextQuestion=useCallback(async(sid,diff)=>{
+    setSelected(null);setRevealed(false);setError(null);
+    // If we have a pre-loaded question, use it instantly
+    if(next){
+      setCurrent(next);
+      setNext(null);
+      // Start pre-loading the one after
+      preloadNext(sid||subject, diff||difficulty);
+      return;
+    }
+    // Otherwise show spinner and load
+    setLoading(true);setCurrent(null);
+    try{
+      const q=await generateQuestion(sid||subject, diff||difficulty);
+      setCurrent(q);
+      // Start pre-loading next one immediately
+      preloadNext(sid||subject, diff||difficulty);
+    }catch(e){
+      setError("Couldn't generate question. Check connection.");
+    }
+    setLoading(false);
+  },[subject,difficulty,next,preloadNext]);
+
   const startSubject=useCallback((sid)=>{
     setSubject(sid);
-    setSelected(null);setRevealed(false);setSessionCount(0);
-    let done=[];try{done=JSON.parse(gs[`done_${sid}`]||"[]");}catch{}
-    let available=QB[sid].filter(q=>!done.includes(q.id));
-    if(available.length===0) available=[...QB[sid]];
-    const shuffled=shuffle(available);
-    setQueue(shuffled);
-    setCurrent(shuffled[0]);
-  },[gs]);
+    setSessionCount(0);
+    setNext(null);
+    loadNextQuestion(sid, difficulty);
+  },[difficulty,loadNextQuestion]);
 
   const handleSelect=(choice)=>{
     if(revealed)return;
     const correct=choice.charAt(0)===current.answer;
     setSelected(choice);
     setRevealed(true);
-    awardXP(subject,current.xp,correct,{topic:current.topic,difficulty:"Standard",question:current.question,answer:choice},current.id);
+    awardXP(subject,current.xp,correct,{topic:current.topic,difficulty:current.difficulty,question:current.question,answer:choice},current.id);
     showToast(correct?`✅ Correct! +${current.xp} XP 🎉`:`❌ Wrong! Answer: ${current.answer}`,correct?"#10B981":"#EF4444");
+    // Pre-load next question while Jaeden reads explanation
+    preloadNext(subject, difficulty);
   };
 
   const nextQuestion=()=>{
-    const newQueue=queue.slice(1);
-    setQueue(newQueue);
-    setSelected(null);setRevealed(false);
     setSessionCount(c=>c+1);
-    if(newQueue.length>0) setCurrent(newQueue[0]);
-    else setCurrent(null);
+    loadNextQuestion(subject, difficulty);
   };
 
   if(!subject) return(
     <div style={{padding:16}}>
-      <PageHeader title="⚡ Practice" subtitle="Instant questions — no waiting!"/>
-      <div style={{display:"flex",flexDirection:"column",gap:10}}>
-        {SUBJECTS.map(s=>{
-          let done=[];try{done=JSON.parse(gs[`done_${s.id}`]||"[]");}catch{}
-          const total=QB[s.id].length;
-          const remaining=total-done.length;
-          return(
-            <button key={s.id} onClick={()=>startSubject(s.id)} style={{background:"rgba(255,255,255,0.04)",border:`1px solid ${s.color}33`,borderRadius:16,padding:16,display:"flex",alignItems:"center",gap:14,cursor:"pointer",textAlign:"left",width:"100%"}}>
-              <div style={{width:48,height:48,borderRadius:14,background:`${s.color}22`,border:`1.5px solid ${s.color}44`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,color:s.color}}>{s.icon}</div>
-              <div style={{flex:1}}>
-                <div style={{fontSize:16,fontWeight:700,color:"white"}}>{s.label}</div>
-                <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginTop:2}}>{remaining>0?`${remaining} questions left`:"All done! Will reset 🔄"}</div>
-              </div>
-              <div style={{color:s.color,fontSize:20}}>→</div>
-            </button>
-          );
-        })}
+      <PageHeader title="⚡ Practice" subtitle="AI-generated — infinite questions!"/>
+      <Label>Difficulty</Label>
+      <div style={{display:"flex",gap:8,marginBottom:16}}>
+        {["Easy","Medium","Hard"].map(d=>(
+          <button key={d} onClick={()=>setDifficulty(d)} style={{flex:1,padding:"10px 0",borderRadius:12,border:`2px solid ${difficulty===d?(d==="Hard"?"#EF4444":d==="Medium"?"#F59E0B":"#10B981"):"rgba(255,255,255,0.1)"}`,background:difficulty===d?"rgba(255,255,255,0.08)":"rgba(255,255,255,0.03)",color:difficulty===d?"white":"rgba(255,255,255,0.4)",fontWeight:700,fontSize:13,cursor:"pointer"}}>
+            {d==="Hard"?"🔴":d==="Medium"?"🟡":"🟢"} {d}
+          </button>
+        ))}
       </div>
-    </div>
-  );
-
-  if(!current) return(
-    <div style={{padding:16,textAlign:"center",paddingTop:60}}>
-      <div style={{fontSize:48,marginBottom:16}}>🎉</div>
-      <div style={{fontSize:20,fontWeight:800,color:"white",marginBottom:8}}>All done!</div>
-      <div style={{fontSize:14,color:"rgba(255,255,255,0.5)",marginBottom:24}}>You've completed all {subj?.label} questions this session.</div>
-      <button onClick={()=>setSubject(null)} style={{padding:"12px 24px",background:`linear-gradient(135deg,${subj?.color},${subj?.dark})`,border:"none",borderRadius:14,color:"white",fontSize:15,fontWeight:700,cursor:"pointer"}}>Back to Subjects</button>
+      <Label>Subject</Label>
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {SUBJECTS.map(s=>(
+          <button key={s.id} onClick={()=>startSubject(s.id)} style={{background:"rgba(255,255,255,0.04)",border:`1px solid ${s.color}33`,borderRadius:16,padding:16,display:"flex",alignItems:"center",gap:14,cursor:"pointer",textAlign:"left",width:"100%"}}>
+            <div style={{width:48,height:48,borderRadius:14,background:`${s.color}22`,border:`1.5px solid ${s.color}44`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,color:s.color}}>{s.icon}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:16,fontWeight:700,color:"white"}}>{s.label}</div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginTop:2}}>AI generates fresh questions every time ♾️</div>
+            </div>
+            <div style={{color:s.color,fontSize:20}}>→</div>
+          </button>
+        ))}
+      </div>
     </div>
   );
 
@@ -524,42 +559,64 @@ function PracticeTab({gs,awardXP,showToast}){
       <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
         <button onClick={()=>setSubject(null)} style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:10,padding:"6px 12px",color:"white",cursor:"pointer",fontSize:16}}>←</button>
         <div style={{fontSize:18,fontWeight:800,color:subj?.color}}>{subj?.icon} {subj?.label}</div>
-        <div style={{marginLeft:"auto",fontSize:12,color:"rgba(255,255,255,0.35)"}}>{queue.length} left</div>
+        <div style={{marginLeft:"auto",fontSize:12,color:"rgba(255,255,255,0.35)"}}>#{sessionCount+1}</div>
       </div>
-      <div style={{animation:"pop 0.15s ease"}}>
-        <div style={{display:"inline-block",background:`${subj?.color}22`,border:`1px solid ${subj?.color}44`,borderRadius:8,padding:"4px 10px",fontSize:11,color:subj?.color,fontWeight:700,marginBottom:12}}>
-          {current.topic} · +{current.xp} XP · <span style={{color:current.difficulty==="Hard"?"#EF4444":current.difficulty==="Medium"?"#F59E0B":"#10B981"}}>{current.difficulty==="Hard"?"🔴 Hard":current.difficulty==="Medium"?"🟡 Medium":"🟢 Easy"}</span>
+
+      {loading&&(
+        <div style={{textAlign:"center",paddingTop:60}}>
+          <div style={{fontSize:36,animation:"spin 1s linear infinite",display:"inline-block"}}>⚙️</div>
+          <div style={{color:"rgba(255,255,255,0.4)",fontSize:13,marginTop:12}}>Generating question...</div>
         </div>
-        <div style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:16,padding:16,marginBottom:14,fontSize:14,color:"rgba(255,255,255,0.9)",lineHeight:1.75,whiteSpace:"pre-wrap"}}>
-          {current.question}
+      )}
+
+      {error&&!loading&&(
+        <div style={{textAlign:"center",paddingTop:40}}>
+          <div style={{fontSize:32,marginBottom:12}}>⚠️</div>
+          <div style={{color:"#FCA5A5",fontSize:13,marginBottom:20}}>{error}</div>
+          <button onClick={()=>loadNextQuestion(subject,difficulty)} style={{padding:"12px 24px",background:"#3B82F6",border:"none",borderRadius:14,color:"white",fontSize:14,fontWeight:700,cursor:"pointer"}}>Try Again</button>
         </div>
-        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
-          {current.choices.map((c,i)=>{
-            const isCorrect=c.charAt(0)===current.answer;
-            const isSelected=selected===c;
-            let bg="rgba(255,255,255,0.04)",border="rgba(255,255,255,0.1)",textColor="rgba(255,255,255,0.85)";
-            if(revealed&&isCorrect){bg="rgba(16,185,129,0.15)";border="#10B981";textColor="#6EE7B7";}
-            else if(revealed&&isSelected&&!isCorrect){bg="rgba(239,68,68,0.15)";border="#EF4444";textColor="#FCA5A5";}
-            return(
-              <button key={i} onClick={()=>handleSelect(c)} disabled={revealed} style={{background:bg,border:`1.5px solid ${border}`,borderRadius:12,padding:"13px 14px",textAlign:"left",color:textColor,fontSize:13,cursor:revealed?"default":"pointer",fontWeight:isSelected?700:400,width:"100%",transition:"all 0.15s"}}>
-                {c}
-              </button>
-            );
-          })}
-        </div>
-        {!revealed&&<div style={{textAlign:"center",fontSize:12,color:"rgba(255,255,255,0.25)",marginBottom:10}}>👆 Select an answer to continue</div>}
-        {revealed&&(
-          <>
-            <div style={{background:"rgba(16,185,129,0.08)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:14,padding:14,marginBottom:14}}>
-              <div style={{fontSize:12,fontWeight:700,color:"#10B981",marginBottom:6}}>💡 Explanation</div>
-              <div style={{fontSize:13,color:"rgba(255,255,255,0.75)",lineHeight:1.65}}>{current.explanation}</div>
+      )}
+
+      {current&&!loading&&(
+        <div style={{animation:"pop 0.15s ease"}}>
+          <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
+            <div style={{background:`${subj?.color}22`,border:`1px solid ${subj?.color}44`,borderRadius:8,padding:"4px 10px",fontSize:11,color:subj?.color,fontWeight:700}}>{current.topic}</div>
+            <div style={{background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:8,padding:"4px 10px",fontSize:11,color:current.difficulty==="Hard"?"#EF4444":current.difficulty==="Medium"?"#F59E0B":"#10B981",fontWeight:700}}>
+              {current.difficulty==="Hard"?"🔴":current.difficulty==="Medium"?"🟡":"🟢"} {current.difficulty} · +{current.xp} XP
             </div>
-            <button onClick={nextQuestion} style={{width:"100%",padding:14,background:`linear-gradient(135deg,${subj?.color},${subj?.dark})`,border:"none",borderRadius:14,color:"white",fontSize:15,fontWeight:800,cursor:"pointer",boxShadow:`0 4px 16px ${subj?.color}44`}}>
-              Next Question →
-            </button>
-          </>
-        )}
-      </div>
+          </div>
+          <div style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:16,padding:16,marginBottom:14,fontSize:14,color:"rgba(255,255,255,0.9)",lineHeight:1.75,whiteSpace:"pre-wrap"}}>
+            {current.question}
+          </div>
+          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
+            {current.choices.map((c,i)=>{
+              const isCorrect=c.charAt(0)===current.answer;
+              const isSelected=selected===c;
+              let bg="rgba(255,255,255,0.04)",border="rgba(255,255,255,0.1)",textColor="rgba(255,255,255,0.85)";
+              if(revealed&&isCorrect){bg="rgba(16,185,129,0.15)";border="#10B981";textColor="#6EE7B7";}
+              else if(revealed&&isSelected&&!isCorrect){bg="rgba(239,68,68,0.15)";border="#EF4444";textColor="#FCA5A5";}
+              return(
+                <button key={i} onClick={()=>handleSelect(c)} disabled={revealed} style={{background:bg,border:`1.5px solid ${border}`,borderRadius:12,padding:"13px 14px",textAlign:"left",color:textColor,fontSize:13,cursor:revealed?"default":"pointer",fontWeight:isSelected?700:400,width:"100%",transition:"all 0.15s"}}>
+                  {c}
+                </button>
+              );
+            })}
+          </div>
+          {!revealed&&<div style={{textAlign:"center",fontSize:12,color:"rgba(255,255,255,0.25)",marginBottom:10}}>👆 Select an answer to continue</div>}
+          {revealed&&(
+            <>
+              <div style={{background:"rgba(16,185,129,0.08)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:14,padding:14,marginBottom:14}}>
+                <div style={{fontSize:12,fontWeight:700,color:"#10B981",marginBottom:6}}>💡 Explanation</div>
+                <div style={{fontSize:13,color:"rgba(255,255,255,0.75)",lineHeight:1.65}}>{current.explanation}</div>
+              </div>
+              <button onClick={nextQuestion} style={{width:"100%",padding:14,background:`linear-gradient(135deg,${subj?.color},${subj?.dark})`,border:"none",borderRadius:14,color:"white",fontSize:15,fontWeight:800,cursor:"pointer",boxShadow:`0 4px 16px ${subj?.color}44`}}>
+                {next?"Next Question →":"Next Question ⚙️"}
+              </button>
+              {!next&&<div style={{textAlign:"center",fontSize:11,color:"rgba(255,255,255,0.25)",marginTop:6}}>Preparing next question...</div>}
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
