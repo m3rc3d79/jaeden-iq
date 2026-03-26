@@ -41,6 +41,22 @@ const BADGES = [
   {id:"math50",   icon:"∑", label:"Math Whiz"},
   {id:"perfect5", icon:"💎",label:"5 in a Row"},
   {id:"sasmo10",  icon:"🏆",label:"SASMO Ready"},
+  {id:"weekly",   icon:"🎯",label:"Week Champ"},
+];
+
+const WEEKLY_GOAL = 20;
+
+const MOTIVATION_MSGS = [
+  {msg:"🔥 You're on fire! Keep it up!", color:"#F59E0B"},
+  {msg:"💪 ASEAN Scholarship won't know what hit it!", color:"#3B82F6"},
+  {msg:"🧠 Big brain energy. Respect.", color:"#8B5CF6"},
+  {msg:"⚡ Every question = closer to Singapore!", color:"#60A5FA"},
+  {msg:"🏆 SASMO champion in the making!", color:"#F59E0B"},
+  {msg:"😤 Uncle's watching — don't disappoint!", color:"#EF4444"},
+  {msg:"🚀 Progress saved. You're building something real.", color:"#10B981"},
+  {msg:"💎 5 more questions = badge unlocked. Let's go!", color:"#A78BFA"},
+  {msg:"📈 Streak alive! Don't break the chain.", color:"#F59E0B"},
+  {msg:"🎯 Focus. Grind. Win. That's the plan.", color:"#3B82F6"},
 ];
 
 const STUDY_PLAN = [
@@ -80,92 +96,92 @@ const STUDY_PLAN = [
 
 const QB = {
   math:[
-    {id:"m1",question:"Solve: 2x² - 5x - 3 = 0",choices:["A) x = 3 or x = -½","B) x = -3 or x = ½","C) x = 3 or x = ½","D) x = -3 or x = -½"],answer:"A",explanation:"Factor: (2x+1)(x-3)=0. So x=-½ or x=3.",topic:"Quadratic Equations",xp:40},
-    {id:"m2",question:"Solve simultaneously:\n3x + 2y = 12\nx - y = 1",choices:["A) x=2, y=3","B) x=3, y=2","C) x=14/5, y=9/5","D) x=4, y=0"],answer:"C",explanation:"From x-y=1: x=y+1. Sub: 3(y+1)+2y=12 → 5y=9 → y=9/5, x=14/5.",topic:"Simultaneous Equations",xp:40},
-    {id:"m3",question:"Simplify: (3x²y)³ ÷ (9xy²)",choices:["A) 3x⁵y","B) 3x⁵/y","C) 27x⁵y","D) x⁵y"],answer:"A",explanation:"Numerator: 27x⁶y³. Divide by 9xy²: 3x⁵y.",topic:"Indices & Algebra",xp:40},
-    {id:"m4",question:"A triangle has angles in ratio 2:3:5. What is the largest angle?",choices:["A) 72°","B) 90°","C) 54°","D) 108°"],answer:"B",explanation:"Total=180°. Each part=18°. Largest=5×18°=90°.",topic:"Geometry",xp:20},
-    {id:"m5",question:"Find the volume of a cylinder with radius 7cm and height 10cm. (π≈3.14)",choices:["A) 1538.6 cm³","B) 1439.0 cm³","C) 219.8 cm³","D) 1384.7 cm³"],answer:"A",explanation:"V=πr²h=3.14×49×10=1538.6 cm³.",topic:"Mensuration",xp:30},
-    {id:"m6",question:"The mean of 5 numbers is 12. Four of them are 8, 10, 15, 14. What is the fifth?",choices:["A) 11","B) 13","C) 12","D) 15"],answer:"B",explanation:"Total=60. Sum of four=47. Fifth=60-47=13.",topic:"Statistics",xp:20},
-    {id:"m7",question:"Express 0.000345 in standard form.",choices:["A) 3.45 × 10⁻⁴","B) 3.45 × 10⁻³","C) 34.5 × 10⁻⁵","D) 0.345 × 10⁻³"],answer:"A",explanation:"Move decimal 4 places right: 3.45 × 10⁻⁴.",topic:"Standard Form",xp:20},
-    {id:"m8",question:"Factorise completely: 4x² - 25",choices:["A) (4x-5)(x+5)","B) (2x-5)(2x+5)","C) (2x-5)²","D) 4(x²-25)"],answer:"B",explanation:"Difference of squares: (2x-5)(2x+5).",topic:"Factorisation",xp:30},
-    {id:"m9",question:"A line passes through (0,3) and (4,7). What is its equation?",choices:["A) y = x + 3","B) y = 2x + 3","C) y = x - 3","D) y = 4x + 3"],answer:"A",explanation:"Gradient=(7-3)/4=1. y-intercept=3. Equation: y=x+3.",topic:"Linear Graphs",xp:30},
-    {id:"m10",question:"If 2^(x+1) = 32, find x.",choices:["A) 3","B) 4","C) 5","D) 6"],answer:"B",explanation:"32=2⁵. So x+1=5 → x=4.",topic:"Indices",xp:40},
-    {id:"m11",question:"Perimeter of a rectangle is 56cm. Length is 3× width. Find the area.",choices:["A) 147 cm²","B) 196 cm²","C) 168 cm²","D) 294 cm²"],answer:"A",explanation:"4w=28 → w=7, l=21. Area=147 cm².",topic:"Mensuration",xp:40},
-    {id:"m12",question:"Median of: 3, 7, 2, 9, 5, 1, 8?",choices:["A) 5","B) 7","C) 4","D) 6"],answer:"A",explanation:"Sorted: 1,2,3,5,7,8,9. Middle=5.",topic:"Statistics",xp:20},
-    {id:"m13",question:"Simplify: (x²-9)/(x+3)",choices:["A) x-3","B) x+3","C) x²-3","D) (x-3)(x+3)"],answer:"A",explanation:"x²-9=(x-3)(x+3). Cancel (x+3): x-3.",topic:"Algebraic Fractions",xp:40},
-    {id:"m14",question:"A circle has area 154 cm². Find its radius. (π≈22/7)",choices:["A) 5 cm","B) 6 cm","C) 7 cm","D) 8 cm"],answer:"C",explanation:"(22/7)r²=154 → r²=49 → r=7.",topic:"Mensuration",xp:30},
-    {id:"m15",question:"Expand and simplify: (x+4)(x-2) - (x+1)²",choices:["A) -7x-9","B) -7x+7","C) x²-7","D) -9"],answer:"D",explanation:"(x+4)(x-2)=x²+2x-8. (x+1)²=x²+2x+1. Subtract: -9.",topic:"Algebra",xp:40},
-    {id:"m16",question:"What is the gradient of a line perpendicular to y = 3x + 1?",choices:["A) 3","B) -3","C) 1/3","D) -1/3"],answer:"D",explanation:"Perpendicular gradient = -1/m = -1/3.",topic:"Linear Graphs",xp:40},
-    {id:"m17",question:"Solve: |2x - 4| = 8",choices:["A) x=6 only","B) x=-2 only","C) x=6 or x=-2","D) x=4 or x=0"],answer:"C",explanation:"2x-4=8 → x=6. Or 2x-4=-8 → x=-2.",topic:"Algebra",xp:40},
-    {id:"m18",question:"A bag has 4 red, 3 blue, 3 green balls. Probability of picking red?",choices:["A) 2/5","B) 3/10","C) 1/3","D) 4/7"],answer:"A",explanation:"Total=10. P(red)=4/10=2/5.",topic:"Probability",xp:20},
-    {id:"m19",question:"Find the HCF of 48 and 72.",choices:["A) 12","B) 24","C) 8","D) 36"],answer:"B",explanation:"48=2⁴×3. 72=2³×3². HCF=2³×3=24.",topic:"Number Theory",xp:30},
-    {id:"m20",question:"If f(x) = 2x² - 3x + 1, find f(2).",choices:["A) 3","B) 4","C) 5","D) 6"],answer:"A",explanation:"f(2)=2(4)-3(2)+1=8-6+1=3.",topic:"Functions",xp:30},
+    {id:"m1",question:"Solve: 2x² - 5x - 3 = 0",choices:["A) x = 3 or x = -½","B) x = -3 or x = ½","C) x = 3 or x = ½","D) x = -3 or x = -½"],answer:"A",explanation:"Factor: (2x+1)(x-3)=0. So x=-½ or x=3.",topic:"Quadratic Equations",difficulty:"Hard",xp:60},
+    {id:"m2",question:"Solve simultaneously:\n3x + 2y = 12\nx - y = 1",choices:["A) x=2, y=3","B) x=3, y=2","C) x=14/5, y=9/5","D) x=4, y=0"],answer:"C",explanation:"From x-y=1: x=y+1. Sub: 3(y+1)+2y=12 → 5y=9 → y=9/5, x=14/5.",topic:"Simultaneous Equations",difficulty:"Medium",xp:40},
+    {id:"m3",question:"Simplify: (3x²y)³ ÷ (9xy²)",choices:["A) 3x⁵y","B) 3x⁵/y","C) 27x⁵y","D) x⁵y"],answer:"A",explanation:"Numerator: 27x⁶y³. Divide by 9xy²: 3x⁵y.",topic:"Indices & Algebra",difficulty:"Medium",xp:40},
+    {id:"m4",question:"A triangle has angles in ratio 2:3:5. What is the largest angle?",choices:["A) 72°","B) 90°","C) 54°","D) 108°"],answer:"B",explanation:"Total=180°. Each part=18°. Largest=5×18°=90°.",topic:"Geometry",difficulty:"Easy",xp:20},
+    {id:"m5",question:"Find the volume of a cylinder with radius 7cm and height 10cm. (π≈3.14)",choices:["A) 1538.6 cm³","B) 1439.0 cm³","C) 219.8 cm³","D) 1384.7 cm³"],answer:"A",explanation:"V=πr²h=3.14×49×10=1538.6 cm³.",topic:"Mensuration",difficulty:"Medium",xp:40},
+    {id:"m6",question:"The mean of 5 numbers is 12. Four of them are 8, 10, 15, 14. What is the fifth?",choices:["A) 11","B) 13","C) 12","D) 15"],answer:"B",explanation:"Total=60. Sum of four=47. Fifth=60-47=13.",topic:"Statistics",difficulty:"Easy",xp:20},
+    {id:"m7",question:"Express 0.000345 in standard form.",choices:["A) 3.45 × 10⁻⁴","B) 3.45 × 10⁻³","C) 34.5 × 10⁻⁵","D) 0.345 × 10⁻³"],answer:"A",explanation:"Move decimal 4 places right: 3.45 × 10⁻⁴.",topic:"Standard Form",difficulty:"Easy",xp:20},
+    {id:"m8",question:"Factorise completely: 4x² - 25",choices:["A) (4x-5)(x+5)","B) (2x-5)(2x+5)","C) (2x-5)²","D) 4(x²-25)"],answer:"B",explanation:"Difference of squares: (2x-5)(2x+5).",topic:"Factorisation",difficulty:"Medium",xp:40},
+    {id:"m9",question:"A line passes through (0,3) and (4,7). What is its equation?",choices:["A) y = x + 3","B) y = 2x + 3","C) y = x - 3","D) y = 4x + 3"],answer:"A",explanation:"Gradient=(7-3)/4=1. y-intercept=3. Equation: y=x+3.",topic:"Linear Graphs",difficulty:"Medium",xp:40},
+    {id:"m10",question:"If 2^(x+1) = 32, find x.",choices:["A) 3","B) 4","C) 5","D) 6"],answer:"B",explanation:"32=2⁵. So x+1=5 → x=4.",topic:"Indices",difficulty:"Medium",xp:40},
+    {id:"m11",question:"Perimeter of a rectangle is 56cm. Length is 3× width. Find the area.",choices:["A) 147 cm²","B) 196 cm²","C) 168 cm²","D) 294 cm²"],answer:"A",explanation:"4w=28 → w=7, l=21. Area=147 cm².",topic:"Mensuration",difficulty:"Medium",xp:40},
+    {id:"m12",question:"Median of: 3, 7, 2, 9, 5, 1, 8?",choices:["A) 5","B) 7","C) 4","D) 6"],answer:"A",explanation:"Sorted: 1,2,3,5,7,8,9. Middle=5.",topic:"Statistics",difficulty:"Easy",xp:20},
+    {id:"m13",question:"Simplify: (x²-9)/(x+3)",choices:["A) x-3","B) x+3","C) x²-3","D) (x-3)(x+3)"],answer:"A",explanation:"x²-9=(x-3)(x+3). Cancel (x+3): x-3.",topic:"Algebraic Fractions",difficulty:"Hard",xp:60},
+    {id:"m14",question:"A circle has area 154 cm². Find its radius. (π≈22/7)",choices:["A) 5 cm","B) 6 cm","C) 7 cm","D) 8 cm"],answer:"C",explanation:"(22/7)r²=154 → r²=49 → r=7.",topic:"Mensuration",difficulty:"Medium",xp:40},
+    {id:"m15",question:"Expand and simplify: (x+4)(x-2) - (x+1)²",choices:["A) -7x-9","B) -7x+7","C) x²-7","D) -9"],answer:"D",explanation:"(x+4)(x-2)=x²+2x-8. (x+1)²=x²+2x+1. Subtract: -9.",topic:"Algebra",difficulty:"Hard",xp:60},
+    {id:"m16",question:"What is the gradient of a line perpendicular to y = 3x + 1?",choices:["A) 3","B) -3","C) 1/3","D) -1/3"],answer:"D",explanation:"Perpendicular gradient = -1/m = -1/3.",topic:"Linear Graphs",difficulty:"Hard",xp:60},
+    {id:"m17",question:"Solve: |2x - 4| = 8",choices:["A) x=6 only","B) x=-2 only","C) x=6 or x=-2","D) x=4 or x=0"],answer:"C",explanation:"2x-4=8 → x=6. Or 2x-4=-8 → x=-2.",topic:"Algebra",difficulty:"Hard",xp:60},
+    {id:"m18",question:"A bag has 4 red, 3 blue, 3 green balls. Probability of picking red?",choices:["A) 2/5","B) 3/10","C) 1/3","D) 4/7"],answer:"A",explanation:"Total=10. P(red)=4/10=2/5.",topic:"Probability",difficulty:"Easy",xp:20},
+    {id:"m19",question:"Find the HCF of 48 and 72.",choices:["A) 12","B) 24","C) 8","D) 36"],answer:"B",explanation:"48=2⁴×3. 72=2³×3². HCF=2³×3=24.",topic:"Number Theory",difficulty:"Medium",xp:40},
+    {id:"m20",question:"If f(x) = 2x² - 3x + 1, find f(2).",choices:["A) 3","B) 4","C) 5","D) 6"],answer:"A",explanation:"f(2)=2(4)-3(2)+1=8-6+1=3.",topic:"Functions",difficulty:"Medium",xp:40},
   ],
   english:[
-    {id:"e1",question:'Read: "The ancient library stood silent, its shelves groaning under the weight of forgotten knowledge. Dust motes danced in pale light filtering through cracked windows. Nobody had visited in years, yet the books remained, patient and waiting."\n\nWhat does "patient and waiting" suggest about the books?',choices:["A) The books are alive and conscious","B) The books seem to anticipate being read again","C) The books are very old and damaged","D) The books are arranged neatly"],answer:"B",explanation:"'Patient and waiting' is personification implying the books are preserved, ready, as if hoping for a reader.",topic:"Inference",xp:40},
-    {id:"e2",question:"Which word is closest in meaning to 'melancholy'?",choices:["A) Angry","B) Excited","C) Sad and thoughtful","D) Confused"],answer:"C",explanation:"Melancholy means deep, pensive sadness.",topic:"Vocabulary",xp:20},
-    {id:"e3",question:"Which sentence contains a grammatical error?",choices:["A) Neither the students nor the teacher was ready.","B) Each of the boys have completed their homework.","C) The committee has made its decision.","D) Either John or his friends are coming."],answer:"B",explanation:"'Each' is singular → 'has', not 'have'.",topic:"Grammar",xp:30},
-    {id:"e4",question:'What does "soaked to the bone" mean?\n"Despite the torrential rain, the players, soaked to the bone, refused to leave the field."',choices:["A) Their bones were wet","B) Completely drenched","C) Slightly wet","D) Cold and shivering"],answer:"B",explanation:"'Soaked to the bone' is an idiom meaning completely wet through.",topic:"Idioms",xp:30},
-    {id:"e5",question:"Select the correctly punctuated sentence:",choices:["A) Its a beautiful day, isn't it.","B) It's a beautiful day, isn't it?","C) Its' a beautiful day isn't it?","D) It's a beautiful day isn't it?"],answer:"B",explanation:"'It's'=it is. Question tag needs comma + question mark.",topic:"Punctuation",xp:20},
-    {id:"e6",question:"Best word to fill the blank:\n'The scientist's findings were ___; they overturned decades of accepted theory.'",choices:["A) trivial","B) predictable","C) groundbreaking","D) repetitive"],answer:"C",explanation:"'Groundbreaking' means revolutionary — fits overturning accepted theory.",topic:"Vocabulary",xp:30},
-    {id:"e7",question:'How did the staff feel about the CEO?\n"The CEO spoke with quiet authority. Every word was measured, deliberate. The room fell silent not from fear, but from respect."',choices:["A) Terrified","B) Bored","C) Respectful and attentive","D) Confused"],answer:"C",explanation:"Passage explicitly states 'not from fear, but from respect'.",topic:"Inference",xp:40},
-    {id:"e8",question:"Choose the sentence with correct use of 'whom':",choices:["A) Whom is coming to the party?","B) The student whom won the prize was happy.","C) To whom should I address the letter?","D) Whom do you think he is?"],answer:"C",explanation:"'Whom' = object pronoun. 'To whom' — whom is object of preposition 'to'.",topic:"Grammar",xp:40},
-    {id:"e9",question:"Identify the literary device: 'The wind whispered secrets through the trees.'",choices:["A) Simile","B) Metaphor","C) Personification","D) Hyperbole"],answer:"C",explanation:"Giving human qualities (whispering, secrets) to wind = personification.",topic:"Literary Devices",xp:30},
-    {id:"e10",question:"Which is the best topic sentence for a paragraph about online learning?",choices:["A) Many students use laptops.","B) The internet is very useful.","C) Online learning offers flexibility but demands strong self-discipline.","D) Students should study every day."],answer:"C",explanation:"Good topic sentences introduce the main idea clearly — C gives both benefit and challenge.",topic:"Writing Skills",xp:30},
-    {id:"e11",question:"Choose the correct sentence:",choices:["A) If I was you, I would apologise.","B) If I were you, I would apologise.","C) If I am you, I would apologise.","D) If I be you, I would apologise."],answer:"B",explanation:"Hypothetical subjunctive uses 'were', not 'was', even for singular subjects.",topic:"Grammar",xp:40},
-    {id:"e12",question:"What is the tone of: 'The results were, to put it mildly, disappointing. One might have hoped for better, but hope, it seems, was all we had.'",choices:["A) Angry and aggressive","B) Wry and understated","C) Cheerful and optimistic","D) Neutral and factual"],answer:"B",explanation:"'To put it mildly' and the dry final phrase show irony and understatement — wry tone.",topic:"Tone",xp:40},
-    {id:"e13",question:"'The students, who had studied hard, passed the exam.' What does the underlined clause tell us?",choices:["A) Only some students studied hard","B) All students studied hard","C) The students barely passed","D) Only students who studied passed"],answer:"B",explanation:"Non-restrictive clause (with commas) adds info about ALL students — all studied hard.",topic:"Grammar — Clauses",xp:40},
-    {id:"e14",question:"Which sentence uses the passive voice?",choices:["A) The chef cooked the meal.","B) The meal was cooked by the chef.","C) The chef is cooking the meal.","D) The chef had cooked the meal."],answer:"B",explanation:"Passive voice: subject receives the action. 'The meal was cooked' — meal is acted upon.",topic:"Grammar",xp:30},
-    {id:"e15",question:"Choose the correct word:\n'He was _____ (affected/effected) by the news.'",choices:["A) effected","B) affected","C) Both are correct","D) Neither is correct"],answer:"B",explanation:"'Affected' = influenced/impacted (verb). 'Effect' is usually a noun; 'affect' is the verb here.",topic:"Vocabulary",xp:30},
-    {id:"e16",question:"What does 'ambiguous' mean?",choices:["A) Clearly stated","B) Open to more than one interpretation","C) Completely wrong","D) Very important"],answer:"B",explanation:"Ambiguous means having more than one possible meaning — unclear or uncertain.",topic:"Vocabulary",xp:20},
-    {id:"e17",question:"'Despite studying all night, the exam results were poor.' What does 'despite' signal?",choices:["A) A reason","B) A contrast/concession","C) A result","D) A condition"],answer:"B",explanation:"'Despite' introduces a contrast — the effort didn't lead to expected outcome.",topic:"Connectives",xp:30},
-    {id:"e18",question:"Identify the error: 'Between you and I, this plan will not work.'",choices:["A) 'Between' should be 'among'","B) 'I' should be 'me'","C) 'will not' should be 'won't'","D) No error"],answer:"B",explanation:"After prepositions like 'between', use object pronoun 'me', not subject pronoun 'I'.",topic:"Grammar",xp:40},
-    {id:"e19",question:"Which sentence is most formal?",choices:["A) We need to sort this out ASAP.","B) The matter requires prompt attention.","C) Can you please fix this quickly?","D) This needs to get done fast."],answer:"B",explanation:"Formal writing avoids contractions, slang, and casual phrasing. Option B is precise and professional.",topic:"Register & Style",xp:30},
-    {id:"e20",question:"'He ran like the wind.' This is an example of:",choices:["A) Personification","B) Metaphor","C) Simile","D) Alliteration"],answer:"C",explanation:"A simile compares using 'like' or 'as'. 'Like the wind' = simile.",topic:"Literary Devices",xp:20},
+    {id:"e1",question:'Read: "The ancient library stood silent, its shelves groaning under the weight of forgotten knowledge. Dust motes danced in pale light filtering through cracked windows. Nobody had visited in years, yet the books remained, patient and waiting."\n\nWhat does "patient and waiting" suggest about the books?',choices:["A) The books are alive and conscious","B) The books seem to anticipate being read again","C) The books are very old and damaged","D) The books are arranged neatly"],answer:"B",explanation:"'Patient and waiting' is personification implying the books are preserved, ready, as if hoping for a reader.",topic:"Inference",difficulty:"Hard",xp:60},
+    {id:"e2",question:"Which word is closest in meaning to 'melancholy'?",choices:["A) Angry","B) Excited","C) Sad and thoughtful","D) Confused"],answer:"C",explanation:"Melancholy means deep, pensive sadness.",topic:"Vocabulary",difficulty:"Easy",xp:20},
+    {id:"e3",question:"Which sentence contains a grammatical error?",choices:["A) Neither the students nor the teacher was ready.","B) Each of the boys have completed their homework.","C) The committee has made its decision.","D) Either John or his friends are coming."],answer:"B",explanation:"'Each' is singular → 'has', not 'have'.",topic:"Grammar",difficulty:"Medium",xp:40},
+    {id:"e4",question:'What does "soaked to the bone" mean?\n"Despite the torrential rain, the players, soaked to the bone, refused to leave the field."',choices:["A) Their bones were wet","B) Completely drenched","C) Slightly wet","D) Cold and shivering"],answer:"B",explanation:"'Soaked to the bone' is an idiom meaning completely wet through.",topic:"Idioms",difficulty:"Medium",xp:40},
+    {id:"e5",question:"Select the correctly punctuated sentence:",choices:["A) Its a beautiful day, isn't it.","B) It's a beautiful day, isn't it?","C) Its' a beautiful day isn't it?","D) It's a beautiful day isn't it?"],answer:"B",explanation:"'It's'=it is. Question tag needs comma + question mark.",topic:"Punctuation",difficulty:"Easy",xp:20},
+    {id:"e6",question:"Best word to fill the blank:\n'The scientist's findings were ___; they overturned decades of accepted theory.'",choices:["A) trivial","B) predictable","C) groundbreaking","D) repetitive"],answer:"C",explanation:"'Groundbreaking' means revolutionary — fits overturning accepted theory.",topic:"Vocabulary",difficulty:"Medium",xp:40},
+    {id:"e7",question:'How did the staff feel about the CEO?\n"The CEO spoke with quiet authority. Every word was measured, deliberate. The room fell silent not from fear, but from respect."',choices:["A) Terrified","B) Bored","C) Respectful and attentive","D) Confused"],answer:"C",explanation:"Passage explicitly states 'not from fear, but from respect'.",topic:"Inference",difficulty:"Medium",xp:40},
+    {id:"e8",question:"Choose the sentence with correct use of 'whom':",choices:["A) Whom is coming to the party?","B) The student whom won the prize was happy.","C) To whom should I address the letter?","D) Whom do you think he is?"],answer:"C",explanation:"'Whom' = object pronoun. 'To whom' — whom is object of preposition 'to'.",topic:"Grammar",difficulty:"Hard",xp:60},
+    {id:"e9",question:"Identify the literary device: 'The wind whispered secrets through the trees.'",choices:["A) Simile","B) Metaphor","C) Personification","D) Hyperbole"],answer:"C",explanation:"Giving human qualities (whispering, secrets) to wind = personification.",topic:"Literary Devices",difficulty:"Easy",xp:20},
+    {id:"e10",question:"Which is the best topic sentence for a paragraph about online learning?",choices:["A) Many students use laptops.","B) The internet is very useful.","C) Online learning offers flexibility but demands strong self-discipline.","D) Students should study every day."],answer:"C",explanation:"Good topic sentences introduce the main idea clearly — C gives both benefit and challenge.",topic:"Writing Skills",difficulty:"Medium",xp:40},
+    {id:"e11",question:"Choose the correct sentence:",choices:["A) If I was you, I would apologise.","B) If I were you, I would apologise.","C) If I am you, I would apologise.","D) If I be you, I would apologise."],answer:"B",explanation:"Hypothetical subjunctive uses 'were', not 'was', even for singular subjects.",topic:"Grammar",difficulty:"Hard",xp:60},
+    {id:"e12",question:"What is the tone of: 'The results were, to put it mildly, disappointing. One might have hoped for better, but hope, it seems, was all we had.'",choices:["A) Angry and aggressive","B) Wry and understated","C) Cheerful and optimistic","D) Neutral and factual"],answer:"B",explanation:"'To put it mildly' and the dry final phrase show irony and understatement — wry tone.",topic:"Tone",difficulty:"Hard",xp:60},
+    {id:"e13",question:"'The students, who had studied hard, passed the exam.' What does the underlined clause tell us?",choices:["A) Only some students studied hard","B) All students studied hard","C) The students barely passed","D) Only students who studied passed"],answer:"B",explanation:"Non-restrictive clause (with commas) adds info about ALL students — all studied hard.",topic:"Grammar — Clauses",difficulty:"Hard",xp:60},
+    {id:"e14",question:"Which sentence uses the passive voice?",choices:["A) The chef cooked the meal.","B) The meal was cooked by the chef.","C) The chef is cooking the meal.","D) The chef had cooked the meal."],answer:"B",explanation:"Passive voice: subject receives the action. 'The meal was cooked' — meal is acted upon.",topic:"Grammar",difficulty:"Medium",xp:40},
+    {id:"e15",question:"Choose the correct word:\n'He was _____ (affected/effected) by the news.'",choices:["A) effected","B) affected","C) Both are correct","D) Neither is correct"],answer:"B",explanation:"'Affected' = influenced/impacted (verb). 'Effect' is usually a noun; 'affect' is the verb here.",topic:"Vocabulary",difficulty:"Medium",xp:40},
+    {id:"e16",question:"What does 'ambiguous' mean?",choices:["A) Clearly stated","B) Open to more than one interpretation","C) Completely wrong","D) Very important"],answer:"B",explanation:"Ambiguous means having more than one possible meaning — unclear or uncertain.",topic:"Vocabulary",difficulty:"Easy",xp:20},
+    {id:"e17",question:"'Despite studying all night, the exam results were poor.' What does 'despite' signal?",choices:["A) A reason","B) A contrast/concession","C) A result","D) A condition"],answer:"B",explanation:"'Despite' introduces a contrast — the effort didn't lead to expected outcome.",topic:"Connectives",difficulty:"Medium",xp:40},
+    {id:"e18",question:"Identify the error: 'Between you and I, this plan will not work.'",choices:["A) 'Between' should be 'among'","B) 'I' should be 'me'","C) 'will not' should be 'won't'","D) No error"],answer:"B",explanation:"After prepositions like 'between', use object pronoun 'me', not subject pronoun 'I'.",topic:"Grammar",difficulty:"Hard",xp:60},
+    {id:"e19",question:"Which sentence is most formal?",choices:["A) We need to sort this out ASAP.","B) The matter requires prompt attention.","C) Can you please fix this quickly?","D) This needs to get done fast."],answer:"B",explanation:"Formal writing avoids contractions, slang, and casual phrasing. Option B is precise and professional.",topic:"Register & Style",difficulty:"Medium",xp:40},
+    {id:"e20",question:"'He ran like the wind.' This is an example of:",choices:["A) Personification","B) Metaphor","C) Simile","D) Alliteration"],answer:"C",explanation:"A simile compares using 'like' or 'as'. 'Like the wind' = simile.",topic:"Literary Devices",difficulty:"Easy",xp:20},
   ],
   gat:[
-    {id:"g1",question:"Book is to Library as Painting is to ___",choices:["A) Artist","B) Museum","C) Canvas","D) Colour"],answer:"B",explanation:"Object → where it is displayed. Book:Library = Painting:Museum.",topic:"Verbal Analogy",xp:30},
-    {id:"g2",question:"What comes next: 2, 6, 18, 54, ___?",choices:["A) 108","B) 162","C) 144","D) 216"],answer:"B",explanation:"×3 each time. 54×3=162.",topic:"Number Sequence",xp:20},
-    {id:"g3",question:"Doctor is to Hospital as Judge is to ___",choices:["A) Law","B) Prison","C) Courtroom","D) Police"],answer:"C",explanation:"Profession → workplace. Doctor:Hospital = Judge:Courtroom.",topic:"Verbal Analogy",xp:20},
-    {id:"g4",question:"What comes next: 1, 4, 9, 16, 25, ___?",choices:["A) 30","B) 36","C) 35","D) 49"],answer:"B",explanation:"Perfect squares: 1²,2²,3²,4²,5²,6²=36.",topic:"Number Sequence",xp:20},
-    {id:"g5",question:"All roses are flowers. Some flowers fade quickly. Which is definitely true?",choices:["A) All roses fade quickly","B) Some roses fade quickly","C) No roses fade quickly","D) None of the above is certain"],answer:"D",explanation:"We can't know which flowers fade quickly — roses may or may not be among them.",topic:"Logical Deduction",xp:40},
-    {id:"g6",question:"Which number does NOT belong: 4, 9, 16, 25, 35, 49?",choices:["A) 4","B) 25","C) 35","D) 49"],answer:"C",explanation:"All others are perfect squares. 35 is not.",topic:"Odd One Out",xp:30},
-    {id:"g7",question:"Hot is to Cold as Fast is to ___",choices:["A) Quick","B) Race","C) Slow","D) Speed"],answer:"C",explanation:"Opposites. Fast↔Slow.",topic:"Verbal Analogy",xp:20},
-    {id:"g8",question:"If all Bloops are Razzies, and all Razzies are Lazzies, which must be true?",choices:["A) All Lazzies are Bloops","B) All Bloops are Lazzies","C) Some Razzies are not Lazzies","D) No Bloops are Lazzies"],answer:"B",explanation:"Bloops⊂Razzies⊂Lazzies. Therefore Bloops⊂Lazzies.",topic:"Logical Deduction",xp:40},
-    {id:"g9",question:"What comes next: 3, 5, 8, 13, 21, ___?",choices:["A) 29","B) 32","C) 34","D) 31"],answer:"C",explanation:"Fibonacci: each term = sum of two before. 13+21=34.",topic:"Number Sequence",xp:30},
-    {id:"g10",question:"Pen is to Write as Knife is to ___",choices:["A) Sharp","B) Cut","C) Metal","D) Kitchen"],answer:"B",explanation:"Tool → function. Pen:Write = Knife:Cut.",topic:"Verbal Analogy",xp:20},
-    {id:"g11",question:"What is the missing number: 2, 5, 11, 23, ___?",choices:["A) 45","B) 46","C) 47","D) 48"],answer:"C",explanation:"Pattern: ×2+1. 23×2+1=47.",topic:"Number Sequence",xp:40},
-    {id:"g12",question:"Some managers are leaders. All leaders are visionaries. Which is definitely true?",choices:["A) All managers are visionaries","B) Some managers are visionaries","C) No managers are visionaries","D) All visionaries are managers"],answer:"B",explanation:"Managers who are leaders are also visionaries → some managers are visionaries.",topic:"Logical Deduction",xp:40},
-    {id:"g13",question:"Which is the odd one out: Square, Triangle, Circle, Rectangle, Cube?",choices:["A) Circle","B) Triangle","C) Cube","D) Square"],answer:"C",explanation:"All others are 2D shapes. Cube is 3D.",topic:"Classification",xp:30},
-    {id:"g14",question:"What comes next: 100, 50, 25, 12.5, ___?",choices:["A) 5","B) 6","C) 6.25","D) 7.5"],answer:"C",explanation:"÷2 each time. 12.5÷2=6.25.",topic:"Number Sequence",xp:30},
-    {id:"g15",question:"Eye is to See as Ear is to ___",choices:["A) Head","B) Sound","C) Hear","D) Music"],answer:"C",explanation:"Organ → function. Eye:See = Ear:Hear.",topic:"Verbal Analogy",xp:20},
-    {id:"g16",question:"What comes next: 1, 3, 7, 15, 31, ___?",choices:["A) 47","B) 55","C) 63","D) 62"],answer:"C",explanation:"Pattern: ×2+1. 31×2+1=63.",topic:"Number Sequence",xp:40},
-    {id:"g17",question:"No cats are dogs. Some pets are cats. Which must be true?",choices:["A) Some pets are dogs","B) No pets are dogs","C) Some pets are not dogs","D) All pets are cats"],answer:"C",explanation:"The cats that are pets are definitely not dogs → some pets are not dogs.",topic:"Logical Deduction",xp:40},
-    {id:"g18",question:"Which is the odd one out: January, March, June, August, October?",choices:["A) June","B) March","C) August","D) October"],answer:"A",explanation:"January, March, August, October have 31 days. June has 30 days.",topic:"Classification",xp:30},
-    {id:"g19",question:"What comes next: 0, 1, 1, 2, 3, 5, 8, ___?",choices:["A) 11","B) 12","C) 13","D) 14"],answer:"C",explanation:"Fibonacci sequence. 5+8=13.",topic:"Number Sequence",xp:20},
-    {id:"g20",question:"Seed is to Tree as Egg is to ___",choices:["A) Nest","B) Shell","C) Bird","D) Hatch"],answer:"C",explanation:"Seed grows into Tree. Egg develops into Bird.",topic:"Verbal Analogy",xp:30},
+    {id:"g1",question:"Book is to Library as Painting is to ___",choices:["A) Artist","B) Museum","C) Canvas","D) Colour"],answer:"B",explanation:"Object → where it is displayed. Book:Library = Painting:Museum.",topic:"Verbal Analogy",difficulty:"Easy",xp:20},
+    {id:"g2",question:"What comes next: 2, 6, 18, 54, ___?",choices:["A) 108","B) 162","C) 144","D) 216"],answer:"B",explanation:"×3 each time. 54×3=162.",topic:"Number Sequence",difficulty:"Easy",xp:20},
+    {id:"g3",question:"Doctor is to Hospital as Judge is to ___",choices:["A) Law","B) Prison","C) Courtroom","D) Police"],answer:"C",explanation:"Profession → workplace. Doctor:Hospital = Judge:Courtroom.",topic:"Verbal Analogy",difficulty:"Easy",xp:20},
+    {id:"g4",question:"What comes next: 1, 4, 9, 16, 25, ___?",choices:["A) 30","B) 36","C) 35","D) 49"],answer:"B",explanation:"Perfect squares: 1²,2²,3²,4²,5²,6²=36.",topic:"Number Sequence",difficulty:"Easy",xp:20},
+    {id:"g5",question:"All roses are flowers. Some flowers fade quickly. Which is definitely true?",choices:["A) All roses fade quickly","B) Some roses fade quickly","C) No roses fade quickly","D) None of the above is certain"],answer:"D",explanation:"We can't know which flowers fade quickly — roses may or may not be among them.",topic:"Logical Deduction",difficulty:"Hard",xp:60},
+    {id:"g6",question:"Which number does NOT belong: 4, 9, 16, 25, 35, 49?",choices:["A) 4","B) 25","C) 35","D) 49"],answer:"C",explanation:"All others are perfect squares. 35 is not.",topic:"Odd One Out",difficulty:"Medium",xp:40},
+    {id:"g7",question:"Hot is to Cold as Fast is to ___",choices:["A) Quick","B) Race","C) Slow","D) Speed"],answer:"C",explanation:"Opposites. Fast↔Slow.",topic:"Verbal Analogy",difficulty:"Easy",xp:20},
+    {id:"g8",question:"If all Bloops are Razzies, and all Razzies are Lazzies, which must be true?",choices:["A) All Lazzies are Bloops","B) All Bloops are Lazzies","C) Some Razzies are not Lazzies","D) No Bloops are Lazzies"],answer:"B",explanation:"Bloops⊂Razzies⊂Lazzies. Therefore Bloops⊂Lazzies.",topic:"Logical Deduction",difficulty:"Hard",xp:60},
+    {id:"g9",question:"What comes next: 3, 5, 8, 13, 21, ___?",choices:["A) 29","B) 32","C) 34","D) 31"],answer:"C",explanation:"Fibonacci: each term = sum of two before. 13+21=34.",topic:"Number Sequence",difficulty:"Medium",xp:40},
+    {id:"g10",question:"Pen is to Write as Knife is to ___",choices:["A) Sharp","B) Cut","C) Metal","D) Kitchen"],answer:"B",explanation:"Tool → function. Pen:Write = Knife:Cut.",topic:"Verbal Analogy",difficulty:"Easy",xp:20},
+    {id:"g11",question:"What is the missing number: 2, 5, 11, 23, ___?",choices:["A) 45","B) 46","C) 47","D) 48"],answer:"C",explanation:"Pattern: ×2+1. 23×2+1=47.",topic:"Number Sequence",difficulty:"Hard",xp:60},
+    {id:"g12",question:"Some managers are leaders. All leaders are visionaries. Which is definitely true?",choices:["A) All managers are visionaries","B) Some managers are visionaries","C) No managers are visionaries","D) All visionaries are managers"],answer:"B",explanation:"Managers who are leaders are also visionaries → some managers are visionaries.",topic:"Logical Deduction",difficulty:"Hard",xp:60},
+    {id:"g13",question:"Which is the odd one out: Square, Triangle, Circle, Rectangle, Cube?",choices:["A) Circle","B) Triangle","C) Cube","D) Square"],answer:"C",explanation:"All others are 2D shapes. Cube is 3D.",topic:"Classification",difficulty:"Medium",xp:40},
+    {id:"g14",question:"What comes next: 100, 50, 25, 12.5, ___?",choices:["A) 5","B) 6","C) 6.25","D) 7.5"],answer:"C",explanation:"÷2 each time. 12.5÷2=6.25.",topic:"Number Sequence",difficulty:"Medium",xp:40},
+    {id:"g15",question:"Eye is to See as Ear is to ___",choices:["A) Head","B) Sound","C) Hear","D) Music"],answer:"C",explanation:"Organ → function. Eye:See = Ear:Hear.",topic:"Verbal Analogy",difficulty:"Easy",xp:20},
+    {id:"g16",question:"What comes next: 1, 3, 7, 15, 31, ___?",choices:["A) 47","B) 55","C) 63","D) 62"],answer:"C",explanation:"Pattern: ×2+1. 31×2+1=63.",topic:"Number Sequence",difficulty:"Hard",xp:60},
+    {id:"g17",question:"No cats are dogs. Some pets are cats. Which must be true?",choices:["A) Some pets are dogs","B) No pets are dogs","C) Some pets are not dogs","D) All pets are cats"],answer:"C",explanation:"The cats that are pets are definitely not dogs → some pets are not dogs.",topic:"Logical Deduction",difficulty:"Hard",xp:60},
+    {id:"g18",question:"Which is the odd one out: January, March, June, August, October?",choices:["A) June","B) March","C) August","D) October"],answer:"A",explanation:"January, March, August, October have 31 days. June has 30 days.",topic:"Classification",difficulty:"Medium",xp:40},
+    {id:"g19",question:"What comes next: 0, 1, 1, 2, 3, 5, 8, ___?",choices:["A) 11","B) 12","C) 13","D) 14"],answer:"C",explanation:"Fibonacci sequence. 5+8=13.",topic:"Number Sequence",difficulty:"Easy",xp:20},
+    {id:"g20",question:"Seed is to Tree as Egg is to ___",choices:["A) Nest","B) Shell","C) Bird","D) Hatch"],answer:"C",explanation:"Seed grows into Tree. Egg develops into Bird.",topic:"Verbal Analogy",difficulty:"Easy",xp:20},
   ],
   sasmo:[
-    {id:"s1",question:"What is the sum of all integers from 1 to 100?",choices:["A) 4950","B) 5000","C) 5050","D) 5100"],answer:"C",explanation:"Gauss formula: n(n+1)/2 = 100×101/2 = 5050.",topic:"Number Theory",xp:70},
-    {id:"s2",question:"How many ways can you arrange the letters in 'MATH'?",choices:["A) 12","B) 24","C) 16","D) 8"],answer:"B",explanation:"4 distinct letters: 4! = 24.",topic:"Combinatorics",xp:40},
-    {id:"s3",question:"A number divisible by both 4 and 6 must be divisible by:",choices:["A) 24","B) 12","C) 8","D) 10"],answer:"B",explanation:"LCM(4,6)=12. Not necessarily 24 (e.g. 12 itself).",topic:"Divisibility",xp:40},
-    {id:"s4",question:"If today is Wednesday, what day will it be 100 days from now?",choices:["A) Monday","B) Tuesday","C) Friday","D) Saturday"],answer:"C",explanation:"100÷7=14 R2. Wednesday+2=Friday.",topic:"Modular Arithmetic",xp:40},
-    {id:"s5",question:"A square has perimeter 48cm. What is its area?",choices:["A) 100 cm²","B) 124 cm²","C) 144 cm²","D) 196 cm²"],answer:"C",explanation:"Side=12cm. Area=144 cm².",topic:"Geometry",xp:30},
-    {id:"s6",question:"How many prime numbers are between 20 and 40?",choices:["A) 3","B) 4","C) 5","D) 6"],answer:"B",explanation:"23, 29, 31, 37 — that's 4 primes.",topic:"Prime Numbers",xp:40},
-    {id:"s7",question:"In a class of 30: 18 play football, 15 play basketball, 8 play both. How many play neither?",choices:["A) 3","B) 4","C) 5","D) 6"],answer:"C",explanation:"Football or basketball = 18+15-8=25. Neither=30-25=5.",topic:"Venn Diagrams",xp:40},
-    {id:"s8",question:"What is the units digit of 7^2026?",choices:["A) 1","B) 3","C) 7","D) 9"],answer:"D",explanation:"Powers of 7 cycle (7,9,3,1) with period 4. 2026÷4=R2 → units digit=9.",topic:"Number Theory",xp:70},
-    {id:"s9",question:"A rectangle's length is twice its width. Diagonal is 10cm. Find the area.",choices:["A) 30 cm²","B) 40 cm²","C) 50 cm²","D) 60 cm²"],answer:"B",explanation:"w²+(2w)²=100 → 5w²=100 → w²=20. Area=2w²=40 cm².",topic:"Geometry",xp:70},
-    {id:"s10",question:"A pattern: 1,1,2,3,5,8,13... What is the 10th term?",choices:["A) 34","B) 55","C) 44","D) 21"],answer:"B",explanation:"Fibonacci: 1,1,2,3,5,8,13,21,34,55. 10th=55.",topic:"Sequences",xp:40},
-    {id:"s11",question:"Find the number of diagonals in a hexagon.",choices:["A) 6","B) 8","C) 9","D) 12"],answer:"C",explanation:"Formula: n(n-3)/2 = 6×3/2 = 9.",topic:"Geometry",xp:40},
-    {id:"s12",question:"What is n if 1+2+3+...+n = 210?",choices:["A) 18","B) 19","C) 20","D) 21"],answer:"C",explanation:"n(n+1)/2=210 → n(n+1)=420. n=20: 20×21=420. ✓",topic:"Number Theory",xp:40},
-    {id:"s13",question:"Two dice are rolled. Probability the sum equals 7?",choices:["A) 1/6","B) 1/8","C) 5/36","D) 7/36"],answer:"A",explanation:"Pairs summing to 7: (1,6)(2,5)(3,4)(4,3)(5,2)(6,1)=6 out of 36=1/6.",topic:"Probability",xp:70},
-    {id:"s14",question:"How many 3-digit multiples of 5 are there?",choices:["A) 160","B) 179","C) 180","D) 181"],answer:"C",explanation:"From 100 to 995: (995-100)/5+1=180.",topic:"Divisibility",xp:40},
-    {id:"s15",question:"A clock shows 3:00. What is the angle between the hands?",choices:["A) 60°","B) 75°","C) 90°","D) 120°"],answer:"C",explanation:"At 3:00 the minute hand is at 12, hour hand at 3. 3 hours × 30°/hour = 90°.",topic:"Geometry",xp:40},
-    {id:"s16",question:"Find the LCM of 12, 18, and 24.",choices:["A) 36","B) 48","C) 72","D) 144"],answer:"C",explanation:"LCM(12,18)=36. LCM(36,24)=72.",topic:"Number Theory",xp:40},
-    {id:"s17",question:"If x + y = 10 and xy = 21, find x² + y².",choices:["A) 48","B) 54","C) 58","D) 62"],answer:"C",explanation:"x²+y²=(x+y)²-2xy=100-42=58.",topic:"Algebra",xp:70},
-    {id:"s18",question:"How many ways to choose 2 students from a group of 6?",choices:["A) 12","B) 15","C) 18","D) 30"],answer:"B",explanation:"C(6,2)=6!/(2!4!)=15.",topic:"Combinatorics",xp:40},
-    {id:"s19",question:"What is the smallest number divisible by 1,2,3,4,5,6,7,8,9,10?",choices:["A) 1260","B) 2520","C) 5040","D) 3628800"],answer:"B",explanation:"LCM(1 to 10)=2³×3²×5×7=2520.",topic:"Number Theory",xp:70},
-    {id:"s20",question:"A triangle has sides 3, 4, 5. What type is it?",choices:["A) Acute","B) Obtuse","C) Right-angled","D) Equilateral"],answer:"C",explanation:"3²+4²=9+16=25=5². Satisfies Pythagoras → right-angled.",topic:"Geometry",xp:30},
+    {id:"s1",question:"What is the sum of all integers from 1 to 100?",choices:["A) 4950","B) 5000","C) 5050","D) 5100"],answer:"C",explanation:"Gauss formula: n(n+1)/2 = 100×101/2 = 5050.",topic:"Number Theory",difficulty:"Medium",xp:40},
+    {id:"s2",question:"How many ways can you arrange the letters in 'MATH'?",choices:["A) 12","B) 24","C) 16","D) 8"],answer:"B",explanation:"4 distinct letters: 4! = 24.",topic:"Combinatorics",difficulty:"Medium",xp:40},
+    {id:"s3",question:"A number divisible by both 4 and 6 must be divisible by:",choices:["A) 24","B) 12","C) 8","D) 10"],answer:"B",explanation:"LCM(4,6)=12. Not necessarily 24 (e.g. 12 itself).",topic:"Divisibility",difficulty:"Medium",xp:40},
+    {id:"s4",question:"If today is Wednesday, what day will it be 100 days from now?",choices:["A) Monday","B) Tuesday","C) Friday","D) Saturday"],answer:"C",explanation:"100÷7=14 R2. Wednesday+2=Friday.",topic:"Modular Arithmetic",difficulty:"Medium",xp:40},
+    {id:"s5",question:"A square has perimeter 48cm. What is its area?",choices:["A) 100 cm²","B) 124 cm²","C) 144 cm²","D) 196 cm²"],answer:"C",explanation:"Side=12cm. Area=144 cm².",topic:"Geometry",difficulty:"Easy",xp:20},
+    {id:"s6",question:"How many prime numbers are between 20 and 40?",choices:["A) 3","B) 4","C) 5","D) 6"],answer:"B",explanation:"23, 29, 31, 37 — that's 4 primes.",topic:"Prime Numbers",difficulty:"Medium",xp:40},
+    {id:"s7",question:"In a class of 30: 18 play football, 15 play basketball, 8 play both. How many play neither?",choices:["A) 3","B) 4","C) 5","D) 6"],answer:"C",explanation:"Football or basketball = 18+15-8=25. Neither=30-25=5.",topic:"Venn Diagrams",difficulty:"Medium",xp:40},
+    {id:"s8",question:"What is the units digit of 7^2026?",choices:["A) 1","B) 3","C) 7","D) 9"],answer:"D",explanation:"Powers of 7 cycle (7,9,3,1) with period 4. 2026÷4=R2 → units digit=9.",topic:"Number Theory",difficulty:"Hard",xp:80},
+    {id:"s9",question:"A rectangle's length is twice its width. Diagonal is 10cm. Find the area.",choices:["A) 30 cm²","B) 40 cm²","C) 50 cm²","D) 60 cm²"],answer:"B",explanation:"w²+(2w)²=100 → 5w²=100 → w²=20. Area=2w²=40 cm².",topic:"Geometry",difficulty:"Hard",xp:80},
+    {id:"s10",question:"A pattern: 1,1,2,3,5,8,13... What is the 10th term?",choices:["A) 34","B) 55","C) 44","D) 21"],answer:"B",explanation:"Fibonacci: 1,1,2,3,5,8,13,21,34,55. 10th=55.",topic:"Sequences",difficulty:"Medium",xp:40},
+    {id:"s11",question:"Find the number of diagonals in a hexagon.",choices:["A) 6","B) 8","C) 9","D) 12"],answer:"C",explanation:"Formula: n(n-3)/2 = 6×3/2 = 9.",topic:"Geometry",difficulty:"Medium",xp:40},
+    {id:"s12",question:"What is n if 1+2+3+...+n = 210?",choices:["A) 18","B) 19","C) 20","D) 21"],answer:"C",explanation:"n(n+1)/2=210 → n(n+1)=420. n=20: 20×21=420. ✓",topic:"Number Theory",difficulty:"Hard",xp:80},
+    {id:"s13",question:"Two dice are rolled. Probability the sum equals 7?",choices:["A) 1/6","B) 1/8","C) 5/36","D) 7/36"],answer:"A",explanation:"Pairs summing to 7: (1,6)(2,5)(3,4)(4,3)(5,2)(6,1)=6 out of 36=1/6.",topic:"Probability",difficulty:"Hard",xp:80},
+    {id:"s14",question:"How many 3-digit multiples of 5 are there?",choices:["A) 160","B) 179","C) 180","D) 181"],answer:"C",explanation:"From 100 to 995: (995-100)/5+1=180.",topic:"Divisibility",difficulty:"Medium",xp:40},
+    {id:"s15",question:"A clock shows 3:00. What is the angle between the hands?",choices:["A) 60°","B) 75°","C) 90°","D) 120°"],answer:"C",explanation:"At 3:00 the minute hand is at 12, hour hand at 3. 3 hours × 30°/hour = 90°.",topic:"Geometry",difficulty:"Easy",xp:20},
+    {id:"s16",question:"Find the LCM of 12, 18, and 24.",choices:["A) 36","B) 48","C) 72","D) 144"],answer:"C",explanation:"LCM(12,18)=36. LCM(36,24)=72.",topic:"Number Theory",difficulty:"Medium",xp:40},
+    {id:"s17",question:"If x + y = 10 and xy = 21, find x² + y².",choices:["A) 48","B) 54","C) 58","D) 62"],answer:"C",explanation:"x²+y²=(x+y)²-2xy=100-42=58.",topic:"Algebra",difficulty:"Hard",xp:80},
+    {id:"s18",question:"How many ways to choose 2 students from a group of 6?",choices:["A) 12","B) 15","C) 18","D) 30"],answer:"B",explanation:"C(6,2)=6!/(2!4!)=15.",topic:"Combinatorics",difficulty:"Medium",xp:40},
+    {id:"s19",question:"What is the smallest number divisible by 1,2,3,4,5,6,7,8,9,10?",choices:["A) 1260","B) 2520","C) 5040","D) 3628800"],answer:"B",explanation:"LCM(1 to 10)=2³×3²×5×7=2520.",topic:"Number Theory",difficulty:"Hard",xp:80},
+    {id:"s20",question:"A triangle has sides 3, 4, 5. What type is it?",choices:["A) Acute","B) Obtuse","C) Right-angled","D) Equilateral"],answer:"C",explanation:"3²+4²=9+16=25=5². Satisfies Pythagoras → right-angled.",topic:"Geometry",difficulty:"Easy",xp:20},
   ],
 };
 
@@ -197,6 +213,7 @@ const DEFAULT_GS = {
   streak:0,level:1,last_study_date:"",
   badges:"[]",correct_streak:0,total_answered:0,sasmo_count:0,
   done_math:"[]",done_english:"[]",done_gat:"[]",done_sasmo:"[]",
+  week_start:"",week_count:0,streak_freeze:1,
 };
 
 function App() {
@@ -243,12 +260,35 @@ function App() {
       const newSubjXp=(Number(prev[key])||0)+earned;
       const totalXp=SUBJECTS.reduce((s,sub)=>s+(Number(prev[`xp_${sub.id}`])||0),0)+earned;
       const newLevel=Math.floor(totalXp/200)+1;
+
+      // Streak logic with freeze
       const today=new Date().toDateString();
       const yesterday=new Date(Date.now()-86400000).toDateString();
+      const twoDaysAgo=new Date(Date.now()-2*86400000).toDateString();
       let newStreak=Number(prev.streak)||0;
+      let newFreeze=Number(prev.streak_freeze)||0;
       if(prev.last_study_date!==today){
-        newStreak=prev.last_study_date===yesterday?newStreak+1:1;
+        if(prev.last_study_date===yesterday){
+          newStreak=newStreak+1;
+        } else if(prev.last_study_date===twoDaysAgo && newFreeze>0){
+          // Used freeze — streak survives
+          newStreak=newStreak+1;
+          newFreeze=newFreeze-1;
+        } else {
+          newStreak=1;
+          newFreeze=1; // Reset freeze on streak break
+        }
       }
+
+      // Weekly goal tracking
+      const getWeekStart=()=>{
+        const d=new Date();
+        d.setDate(d.getDate()-d.getDay());
+        return d.toDateString();
+      };
+      const thisWeekStart=getWeekStart();
+      const weekCount=prev.week_start===thisWeekStart?(Number(prev.week_count)||0)+1:1;
+
       let badges=[];try{badges=JSON.parse(prev.badges||"[]");}catch{}
       const totalAnswered=(Number(prev.total_answered)||0)+1;
       const correctStreak=correct?(Number(prev.correct_streak)||0)+1:0;
@@ -259,6 +299,18 @@ function App() {
       if(!badges.includes("math50")&&newSubjXp>=50&&subject==="math")badges.push("math50");
       if(!badges.includes("perfect5")&&correctStreak>=5)badges.push("perfect5");
       if(!badges.includes("sasmo10")&&sasmoCount>=10)badges.push("sasmo10");
+      if(!badges.includes("weekly")&&weekCount>=WEEKLY_GOAL)badges.push("weekly");
+
+      // Motivation message every 5 questions
+      if(totalAnswered%5===0){
+        const m=MOTIVATION_MSGS[Math.floor(Math.random()*MOTIVATION_MSGS.length)];
+        setTimeout(()=>showToast(m.msg,m.color),600);
+      }
+      // Weekly goal hit message
+      if(weekCount===WEEKLY_GOAL){
+        setTimeout(()=>showToast("🎯 Weekly goal smashed! 20 questions done!","#10B981"),600);
+      }
+
       let done=[];try{done=JSON.parse(prev[doneKey]||"[]");}catch{}
       if(questionId&&!done.includes(questionId))done.push(questionId);
       apiPost({action:"log_answer",subject,...answerData,correct,xp_earned:earned});
@@ -267,9 +319,10 @@ function App() {
         badges:JSON.stringify(badges),correct_streak:correctStreak,
         total_answered:totalAnswered,sasmo_count:sasmoCount,
         [doneKey]:JSON.stringify(done),
+        week_start:thisWeekStart,week_count:weekCount,streak_freeze:newFreeze,
       };
     });
-  },[updateGs]);
+  },[updateGs,showToast]);
 
   const totalXP=SUBJECTS.reduce((s,sub)=>s+(Number(gs[`xp_${sub.id}`])||0),0);
   const level=Math.floor(totalXP/200)+1;
@@ -334,10 +387,22 @@ function HomeTab({gs,totalXP,level,xpInLevel,badges}){
         <div style={{display:"flex",alignItems:"center",gap:8,marginTop:14}}>
           <span style={{fontSize:16}}>🔥</span>
           <span style={{fontSize:13,color:"#FCD34D",fontWeight:700}}>{streak}-day streak</span>
+          {Number(gs.streak_freeze)>0&&<span style={{fontSize:11,color:"#60A5FA",marginLeft:4}}>🧊 Freeze ready</span>}
           <span style={{fontSize:12,color:"rgba(255,255,255,0.3)",marginLeft:4}}>☁️ Auto-saved</span>
         </div>
       </div>
       <div style={{padding:"16px 16px 0"}}>
+        {/* Weekly Goal */}
+        <div style={{background:"rgba(16,185,129,0.08)",border:"1px solid rgba(16,185,129,0.2)",borderRadius:16,padding:"12px 14px",marginBottom:16}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+            <span style={{fontSize:13,fontWeight:700,color:"#10B981"}}>🎯 Weekly Goal</span>
+            <span style={{fontSize:12,color:"white",fontWeight:700}}>{Math.min(Number(gs.week_count)||0,WEEKLY_GOAL)}/{WEEKLY_GOAL} questions</span>
+          </div>
+          <div style={{background:"rgba(255,255,255,0.08)",borderRadius:99,height:8,overflow:"hidden"}}>
+            <div style={{width:`${Math.min(((Number(gs.week_count)||0)/WEEKLY_GOAL)*100,100)}%`,height:"100%",background:"linear-gradient(90deg,#10B981,#34D399)",borderRadius:99,transition:"width 0.3s"}}/>
+          </div>
+          {(Number(gs.week_count)||0)>=WEEKLY_GOAL&&<div style={{fontSize:11,color:"#34D399",marginTop:6,fontWeight:700}}>✅ Goal complete this week!</div>}
+        </div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
           {[{label:"ASEAN Scholarship",date:"Apr 11",days:aseanDays,color:"#3B82F6",emoji:"🎯"},{label:"SASMO 2026",date:"Apr 18",days:sasmoDays,color:"#F59E0B",emoji:"🏆"}].map(c=>(
             <div key={c.label} style={{background:"rgba(255,255,255,0.04)",border:`1px solid ${c.color}33`,borderRadius:16,padding:"14px 12px",borderLeft:`3px solid ${c.color}`}}>
@@ -463,7 +528,7 @@ function PracticeTab({gs,awardXP,showToast}){
       </div>
       <div style={{animation:"pop 0.15s ease"}}>
         <div style={{display:"inline-block",background:`${subj?.color}22`,border:`1px solid ${subj?.color}44`,borderRadius:8,padding:"4px 10px",fontSize:11,color:subj?.color,fontWeight:700,marginBottom:12}}>
-          {current.topic} · +{current.xp} XP
+          {current.topic} · +{current.xp} XP · <span style={{color:current.difficulty==="Hard"?"#EF4444":current.difficulty==="Medium"?"#F59E0B":"#10B981"}}>{current.difficulty==="Hard"?"🔴 Hard":current.difficulty==="Medium"?"🟡 Medium":"🟢 Easy"}</span>
         </div>
         <div style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:16,padding:16,marginBottom:14,fontSize:14,color:"rgba(255,255,255,0.9)",lineHeight:1.75,whiteSpace:"pre-wrap"}}>
           {current.question}
