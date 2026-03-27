@@ -448,88 +448,87 @@ function HomeTab({gs,totalXP,level,xpInLevel,badges}){
   );
 }
 
-async function generateQuestion(subject, difficulty) {
-  const url = API_URL + "?action=generate&subject=" + subject + "&difficulty=" + difficulty;
+async function fetchQuestion(subject, seen) {
+  const seenStr = encodeURIComponent(JSON.stringify(seen || []));
+  const url = API_URL + "?action=generate&subject=" + subject + "&seen=" + seenStr;
   const res = await fetch(url);
   const data = await res.json();
-  if (data.status !== "ok") throw new Error("Generate failed");
-  const q = data.question;
-  q.id = "ai_" + Date.now();
-  return q;
+  if (data.status !== "ok") throw new Error("Fetch failed");
+  return data.question;
 }
 
 function PracticeTab({gs,awardXP,showToast}){
   const [subject,setSubject]=useState(null);
   const [difficulty,setDifficulty]=useState("Medium");
   const [current,setCurrent]=useState(null);
-  const [next,setNext]=useState(null); // pre-loaded next question
+  const [next,setNext]=useState(null);
   const [selected,setSelected]=useState(null);
   const [revealed,setRevealed]=useState(false);
   const [loading,setLoading]=useState(false);
   const [sessionCount,setSessionCount]=useState(0);
   const [error,setError]=useState(null);
+  const seenRef=useRef([]); // tracks seen question IDs this session
 
   const subj=SUBJECTS.find(s=>s.id===subject);
 
-  // Silently pre-load next question in background
-  const preloadNext=useCallback(async(sid,diff)=>{
+  const preloadNext=useCallback(async(sid)=>{
     try{
-      const q=await generateQuestion(sid,diff);
+      const q=await fetchQuestion(sid||subject, seenRef.current);
       setNext(q);
     }catch(e){
       setNext(null);
     }
-  },[]);
+  },[subject]);
 
-  const loadNextQuestion=useCallback(async(sid,diff)=>{
+  const loadNextQuestion=useCallback(async(sid)=>{
     setSelected(null);setRevealed(false);setError(null);
-    // If we have a pre-loaded question, use it instantly
     if(next){
       setCurrent(next);
       setNext(null);
-      // Start pre-loading the one after
-      preloadNext(sid||subject, diff||difficulty);
+      preloadNext(sid||subject);
       return;
     }
-    // Otherwise show spinner and load
     setLoading(true);setCurrent(null);
     try{
-      const q=await generateQuestion(sid||subject, diff||difficulty);
+      const q=await fetchQuestion(sid||subject, seenRef.current);
       setCurrent(q);
-      // Start pre-loading next one immediately
-      preloadNext(sid||subject, diff||difficulty);
+      preloadNext(sid||subject);
     }catch(e){
-      setError("Couldn't generate question. Check connection.");
+      setError("Couldn't load question. Check connection.");
     }
     setLoading(false);
-  },[subject,difficulty,next,preloadNext]);
+  },[subject,next,preloadNext]);
 
   const startSubject=useCallback((sid)=>{
     setSubject(sid);
     setSessionCount(0);
     setNext(null);
-    loadNextQuestion(sid, difficulty);
-  },[difficulty,loadNextQuestion]);
+    seenRef.current=[];
+    loadNextQuestion(sid);
+  },[loadNextQuestion]);
 
   const handleSelect=(choice)=>{
     if(revealed)return;
     const correct=choice.charAt(0)===current.answer;
     setSelected(choice);
     setRevealed(true);
+    // Track seen question ID
+    if(current.id && !seenRef.current.includes(current.id)){
+      seenRef.current=[...seenRef.current, current.id];
+    }
     awardXP(subject,current.xp,correct,{topic:current.topic,difficulty:current.difficulty,question:current.question,answer:choice},current.id);
     showToast(correct?`✅ Correct! +${current.xp} XP 🎉`:`❌ Wrong! Answer: ${current.answer}`,correct?"#10B981":"#EF4444");
-    // Pre-load next question while Jaeden reads explanation
-    preloadNext(subject, difficulty);
+    preloadNext(subject);
   };
 
   const nextQuestion=()=>{
     setSessionCount(c=>c+1);
-    loadNextQuestion(subject, difficulty);
+    loadNextQuestion(subject);
   };
 
   if(!subject) return(
     <div style={{padding:16}}>
-      <PageHeader title="⚡ Practice" subtitle="AI-generated — infinite questions!"/>
+      <PageHeader title="⚡ Practice" subtitle="50 unique questions per subject!"/>
       <Label>Difficulty</Label>
       <div style={{display:"flex",gap:8,marginBottom:16}}>
         {["Easy","Medium","Hard"].map(d=>(
